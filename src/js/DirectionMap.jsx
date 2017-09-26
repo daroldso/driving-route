@@ -100,8 +100,6 @@ export default class DirectionMap extends Component {
       }
     }
 
-    console.log(`Got token! ${token}`);
-
     while (!routes) {
       try {
         routes = await this.getRouteFromApi(token);
@@ -147,7 +145,6 @@ export default class DirectionMap extends Component {
         travelMode: 'DRIVING'
       },
       (response, status) => {
-        console.log(response);
         if (status === 'OK') {
           this.setState({
             isLoading: false
