@@ -94,8 +94,11 @@ export default class DirectionMap extends Component {
       try {
         token = await this.postToApi(routesFromUser);
       } catch (err) {
-        let msg = 'Fail to POST route. Retrying in 2 seconds';
-        Materialize.toast(`${msg}`, 2000, 'red darken-2');
+        Materialize.toast(
+          'Fail to POST route. Retrying in 2 seconds',
+          2000,
+          'red darken-2'
+        );
         await delay(2000);
       }
     }
@@ -104,8 +107,11 @@ export default class DirectionMap extends Component {
       try {
         routes = await this.getRouteFromApi(token);
       } catch (err) {
-        let msg = 'Fail to GET route. Retrying in 2 seconds';
-        Materialize.toast(`${msg}`, 2000, 'red darken-2');
+        Materialize.toast(
+          'Fail to GET route. Retrying in 2 seconds',
+          2000,
+          'red darken-2'
+        );
         await delay(2000);
       }
     }
@@ -146,14 +152,14 @@ export default class DirectionMap extends Component {
       },
       (response, status) => {
         if (status === 'OK') {
-          this.setState({
-            isLoading: false
-          });
-
           this.props.directionsDisplay.setDirections(response);
         } else {
-          window.alert('Directions request failed due to ' + status);
+          let msg = `Directions request failed due to ${status}`;
+          Materialize.toast(msg, 5000, 'red darken-2');
         }
+        this.setState({
+          isLoading: false
+        });
       }
     );
   };
