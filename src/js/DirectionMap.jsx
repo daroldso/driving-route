@@ -20,6 +20,7 @@ export default class DirectionMap extends Component {
     isLoading: false
   };
 
+  // Handler for origin and destination input change event
   handleInputsChange = event => {
     const target = event.target;
     const name = target.name;
@@ -30,6 +31,7 @@ export default class DirectionMap extends Component {
     });
   };
 
+  // Handler for dropoff point input change event
   handleDropoffChange = (i, event) => {
     const target = event.target;
     const name = target.name;
@@ -42,12 +44,14 @@ export default class DirectionMap extends Component {
     });
   };
 
+  // Handler for delete icon click event
   handleDeleteIconClick = (i, event) => {
     this.setState({
       dropoffs: this.state.dropoffs.filter((dropoff, index) => i !== index)
     });
   };
 
+  // Handler for Add Dropoff Point button click event
   handleAddDropoffClick = event => {
     event.preventDefault();
 
@@ -56,6 +60,7 @@ export default class DirectionMap extends Component {
     });
   };
 
+  // Handler for form submit event
   handleSubmit = async event => {
     event.preventDefault();
 
@@ -70,10 +75,20 @@ export default class DirectionMap extends Component {
     this.processRoutes(routes);
   };
 
+  /**
+   * Get an array of all the locations from state
+   * @return {array}
+   */
   getAllLocations = () => {
     return [this.state.origin, ...this.state.dropoffs, this.state.destination];
   };
 
+  /**
+   * Submit a location to Google Map API and get back the coordinates of the
+   * location
+   * @param  {string} location
+   * @return {Promise}
+   */
   getLocationCoords = location => {
     return axios
       .get(
@@ -119,18 +134,34 @@ export default class DirectionMap extends Component {
     this.calculateAndDisplayRoute(routes);
   };
 
+  /**
+   * Post route to mockApi
+   * @param  {array} routes Array containing arraies of latitude and
+   *                        longitude value
+   * @return {Promise}
+   */
   postToApi = routes => {
     return axios
       .post('http://localhost:8080/route', routes)
       .then(res => res.data.token);
   };
 
+  /**
+   * Get routes from mockApi
+   * @param  {string} token Returned from POST /route
+   * @return {Promise}
+   */
   getRouteFromApi = token => {
     return axios
       .get(`http://localhost:8080/route/${token}`)
       .then(res => res.data.path);
   };
 
+  /**
+   * Convert routes to LatLngLiteral for Google Map Direction Service
+   * @param  {array} routes Returned from GET /route
+   * @return {array}        Array of LatLngLiteral
+   */
   convertRoutesToLatLngLiteral = routes => {
     return routes.map(route => {
       return {
@@ -140,6 +171,10 @@ export default class DirectionMap extends Component {
     });
   };
 
+  /**
+   * Get the best route from Google Direction Service and update map
+   * @param  {array} routes Array of LatLngLiteral
+   */
   calculateAndDisplayRoute = routes => {
     const waypoints = this.convertRoutesToLatLngLiteral(routes);
     this.props.directionsService.route(
