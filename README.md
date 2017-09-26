@@ -8,7 +8,7 @@ OR
 yarn
 ```
 ### Mock API
-This application require [https://github.com/lalamove/challenge/tree/master/mockApi](mockApi) to run at [http://localhost:8080](http://localhost:8080)
+This application require the [mockApi](https://github.com/lalamove/challenge/tree/master/mockApi) to run at [http://localhost:8080](http://localhost:8080)
 
 ## Running the application
 To run the application in production mode, run
